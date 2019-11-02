@@ -8,9 +8,9 @@
   } from 'svelte-feather-icons'
 </script>
 
-<style>
+<style type="text/postcss">
   .nav-item {
-    @apply p-2;
+    @apply p-2 py-4;
   }
   a {
     transition: all 120ms cubic-bezier(0.5, 0.82, 0.165, 1);

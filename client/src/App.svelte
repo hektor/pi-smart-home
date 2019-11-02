@@ -7,9 +7,9 @@
   import { authState } from 'rxfire/auth'
 
   // Components
-  import Header from './Header.svelte'
-  import Nav from './Nav.svelte'
-  import Togglable from './Togglable.svelte'
+  import Header from './components/Header.svelte'
+  import Nav from './components/Nav.svelte'
+  import Togglable from './components/Togglable.svelte'
 
   // Variables
   let user

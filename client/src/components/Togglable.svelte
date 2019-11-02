@@ -1,6 +1,6 @@
 <script>
   // Firebase
-  import { firestore } from './firebase'
+  import { firestore } from '../firebase'
   export let status
   export let id
   export let type
