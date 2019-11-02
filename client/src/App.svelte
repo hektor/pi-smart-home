@@ -51,28 +51,33 @@
 </style>
 
 <Header {title} />
-<div class="toggle-group lights">
-  {#each Object.values(lightSettings) as lightSetting, i}
-    <Togglable status={lightSetting} type="light" id={i} />
-  {/each}
+<div class="flex md:flex-row-reverse flex-wrap">
+  <div class="w-full md:w-4/5">
+    <div class="container pt-16 px-6" />
+    <div class="toggle-group lights">
+      {#each Object.values(lightSettings) as lightSetting, i}
+        <Togglable status={lightSetting} type="light" id={i} />
+      {/each}
+    </div>
+    <div class="toggle-group plugs">
+      {#each Object.values(plugSettings) as plugSetting, i}
+        <Togglable status={plugSetting} type="plug" id={i} />
+      {/each}
+    </div>
+    <div class="toggle-group doors">
+      {#each Object.values(doorSettings) as doorSetting, i}
+        <Togglable status={doorSetting} type="door" id={i} />
+      {/each}
+    </div>
+    <div>
+      {#if user}
+        <button on:click={() => auth.signOut()}>Sign out</button>
+      {:else}
+        <button on:click={() => auth.signInWithPopup(googleProvider)}>
+          Sign in with Google
+        </button>
+      {/if}
+    </div>
+  </div>
+  <Nav />
 </div>
-<div class="toggle-group plugs">
-  {#each Object.values(plugSettings) as plugSetting, i}
-    <Togglable status={plugSetting} type="plug" id={i} />
-  {/each}
-</div>
-<div class="toggle-group doors">
-  {#each Object.values(doorSettings) as doorSetting, i}
-    <Togglable status={doorSetting} type="door" id={i} />
-  {/each}
-</div>
-<div>
-  {#if user}
-    <button on:click={() => auth.signOut()}>Sign out</button>
-  {:else}
-    <button on:click={() => auth.signInWithPopup(googleProvider)}>
-      Sign in with Google
-    </button>
-  {/if}
-</div>
-<Nav />

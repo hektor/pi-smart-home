@@ -26,13 +26,6 @@
   }
 </script>
 
-<style>
-  button {
-    width: 6rem;
-    height: 6rem;
-  }
-</style>
-
 {#if status}
   <button on:click={toggleStatus}>⚪</button>
 {:else}
