@@ -5,6 +5,10 @@ import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import rollup_start_dev from './rollup_start_dev';
 
+// tailwind
+import postcss from 'rollup-plugin-postcss';
+import autoPreprocess from 'svelte-preprocess';
+
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
@@ -17,6 +21,9 @@ export default {
 	},
 	plugins: [
 		svelte({
+			preprocess: autoPreprocess({
+                postcss: true,
+            }),
 			// enable run-time checks when not in production
 			dev: !production,
 			// we'll extract any component CSS out into
@@ -25,7 +32,10 @@ export default {
 				css.write('public/bundle.css');
 			}
 		}),
-
+        postcss({
+            extract: 'public/utils.css',
+		}),
+		
 		// If you have external dependencies installed from
 		// npm, you'll most likely need these plugins. In
 		// some cases you'll need additional configuration —
