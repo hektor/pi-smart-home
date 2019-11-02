@@ -1,20 +1,39 @@
 <script>
   // Firebase
   import { firestore } from './firebase'
-  export let turnedOn
+  export let status
   export let id
+  export let type
+  const collectionTypes = {
+    light: {
+      collectionName: 'lights',
+    },
+    plug: {
+      collectionName: 'plugs',
+    },
+    door: {
+      collectionName: 'doors',
+    },
+  }
   function toggleStatus() {
-    turnedOn = !turnedOn
-    const lightSetting = firestore
+    status = !status
+    firestore
       .collection('devices')
-      .doc('lights')
+      .doc(collectionTypes[type].collectionName)
       .update({
-        [id]: turnedOn,
+        [id]: status,
       })
   }
 </script>
 
-{#if turnedOn}
+<style>
+  button {
+    width: 6rem;
+    height: 6rem;
+  }
+</style>
+
+{#if status}
   <button on:click={toggleStatus}>⚪</button>
 {:else}
   <button on:click={toggleStatus}>⚫</button>
