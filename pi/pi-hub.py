@@ -6,6 +6,11 @@ from sense_hat import SenseHat
 
 import time
 import requests
+from playsound import playsound
+
+# sensehat init
+
+sense = SenseHat()
 
 # firebase init
 
@@ -15,20 +20,18 @@ db = firestore.client()
 
 # get data
 
-ref = db.collection(u'devices')
+ref = db.collection('devices')
 def get_document_by_name(name):
   doc = ref.document(name).get()
   return doc.to_dict()
 
-sense = SenseHat()
+lightSettings = get_document_by_name('lights')
+plugSettings = get_document_by_name('plugs')
+doorSettings = get_document_by_name('doors')
 
-r = (255, 0, 0)         # red
-g = (0,255,0)           # green
-b = (0,0,255)           # blue
-y = (255,255,0)         # yellow
-w = (255,255,255)       # white
-O = (0, 0, 0)           # disabled
+# sensehat constants
 
+## colors
 red = (255, 0, 0)       # red
 green = (0,255,0)       # green
 blue = (0,0,255)        # blue
@@ -38,28 +41,12 @@ yellow_dark = (63,63,0) # yellow
 white = (255,255,255)   # white
 black = (0, 0, 0)       # disabled
 
-defaultDeviceSettings = [
-O, O, y, O, O, y, O, O,
-O, O, O, O, O, O, O, O,
-O, O, O, O, O, O, O, O,
-b, O, O, O, O, O, O, b,
-O, O, y, O, O, y, O, O,
-r, O, O, O, O, O, O, r,
-r, O, O, O, O, O, O, r,
-r, O, O, b, b, O, O, r,
-]
-
-# postions on matrix
-
+## device postions
 doors = [[(0,5),(0,6),(0,7)], [(7,5),(7,6),(7,7)]]
 lights = [(2,0),(5,0),(2,4),(5,4)]
 plugs = [(0,3), (7,3),(3,7),(4,7)]
 
-sense.set_pixels(defaultDeviceSettings)
-
-lightSettings = get_document_by_name('lights')
-plugSettings = get_document_by_name('plugs')
-doorSettings = get_document_by_name('doors')
+## update matrix with firestore settings
 
 for setting in lightSettings.keys():
   if(lightSettings[setting] == True):
@@ -80,3 +67,31 @@ for setting in doorSettings.keys():
   else:
     for pixel in doors[int(setting)]:
       sense.set_pixel(pixel[0],  pixel[1], red)
+
+# add senshat sensor data to database
+
+def set_sensor_settings():
+  ref.document('sensors').set({
+      'temperature': sense.temp,
+      'humidity': sense.humidity
+  })
+
+# matrix alarm 
+
+def raise_alarm():
+  playsound('/path/to/a/sound/file/you/want/to/play.mp3')
+  for door in doors:
+    for pixel in door:
+      sense.set_pixel(pixel[0],  pixel[1], green)
+  while True:
+    for light in lights:
+      sense.set_pixel(light[0], light[1], yellow)
+    time.sleep(1)
+    for light in lights:
+      sense.set_pixel(light[0], light[1], black)
+    time.sleep(1)
+
+def check_alarm_sensor():
+  if get_document_by_name('sensors')['breach']: raise_alarm()
+
+check_alarm_sensor()
