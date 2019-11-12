@@ -1,4 +1,13 @@
 <script>
+  // Routing
+  import { Router, Route } from 'svero'
+  import Signin from './views/Signin.svelte'
+  import Lights from './views/Lights.svelte'
+  import Plugs from './views/Plugs.svelte'
+  import Doors from './views/Doors.svelte'
+  import Security from './views/Security.svelte'
+  import About from './views/About.svelte'
+
   // Svelte
   import { onMount } from 'svelte'
 
@@ -8,8 +17,10 @@
 
   // Components
   import Header from './components/Header.svelte'
-  import Nav from './components/Nav.svelte'
+  import Tabbar from './components/Tabbar.svelte'
   import Togglable from './components/Togglable.svelte'
+
+  import { getAllFromDocument } from './helpers/firestore'
 
   // Variables
   let user
@@ -19,28 +30,18 @@
   const unsubscribe = authState(auth).subscribe(u => (user = u))
   const title = 'Pi Hub'
 
-  onMount(async () => {
-    const lightsRef = await firestore
-      .collection('devices')
-      .doc('lights')
-      .get()
-    lightSettings = await lightsRef.data()
-  })
+  onMount(() => {
+    getAllFromDocument('devices', 'lights').then(data => {
+      lightSettings = data
+    })
 
-  onMount(async () => {
-    const plugsRef = await firestore
-      .collection('devices')
-      .doc('plugs')
-      .get()
-    plugSettings = await plugsRef.data()
-  })
+    getAllFromDocument('devices', 'plugs').then(data => {
+      plugSettings = data
+    })
 
-  onMount(async () => {
-    const doorsRef = await firestore
-      .collection('devices')
-      .doc('doors')
-      .get()
-    doorSettings = await doorsRef.data()
+    getAllFromDocument('devices', 'doors').then(data => {
+      doorSettings = data
+    })
   })
 </script>
 
@@ -59,24 +60,36 @@
 </style>
 
 <Header {title} />
+<div class="ml-32">
+  <Router>
+    <Route path="*" component={Signin} />
+    <Route path="/about" component={About} />
+    <Route path="/lights" component={Lights} settings={lightSettings} />
+    <Route path="/plugs" component={Plugs} settings={plugSettings} />
+    <Route path="/doors" component={Doors} settings={doorSettings} />
+    <Route path="/security" component={Security} />
+    <Tabbar />
+  </Router>
+</div>
+
 <div class="flex md:flex-row-reverse flex-wrap">
   <div class="w-full md:w-4/5">
     <div class="container pt-16 px-6" />
-    <div class="toggle-group lights">
+    <!-- <div class="toggle-group lights">
       {#each Object.values(lightSettings) as lightSetting, i}
         <Togglable status={lightSetting} type="light" id={i} />
       {/each}
-    </div>
-    <div class="toggle-group plugs">
+    </div> -->
+    <!-- <div class="toggle-group plugs">
       {#each Object.values(plugSettings) as plugSetting, i}
         <Togglable status={plugSetting} type="plug" id={i} />
       {/each}
-    </div>
-    <div class="toggle-group doors">
+    </div> -->
+    <!-- <div class="toggle-group doors">
       {#each Object.values(doorSettings) as doorSetting, i}
         <Togglable status={doorSetting} type="door" id={i} />
       {/each}
-    </div>
+    </div> -->
     <div>
       {#if user}
         <button
@@ -105,5 +118,4 @@
       {/if}
     </div>
   </div>
-  <Nav />
 </div>
