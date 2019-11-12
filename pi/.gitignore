@@ -1,0 +1,6 @@
+# credentials
+serviceAccountKey.json
+
+# environment
+.env
+env/
