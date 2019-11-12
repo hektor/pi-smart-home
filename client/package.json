@@ -27,7 +27,8 @@
     "rxfire": "^3.8.8",
     "rxjs": "^6.5.3",
     "sirv-cli": "^0.4.4",
-    "svelte-feather-icons": "^2.0.0"
+    "svelte-feather-icons": "^2.0.0",
+    "svero": "^1.0.0"
   },
   "scripts": {
     "build": "rollup -c",
