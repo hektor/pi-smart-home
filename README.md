@@ -8,8 +8,11 @@ New Media Development - Web of Things
 - Firebase
 - Tailwind
 - PostCSS
+- Python3 on Raspberry Pi w/ Sense Hat
 
 ## Setup
+
+### Web client (Dashboard)
 
 ```
 npm i
@@ -18,3 +21,13 @@ npm i
 ```
 npm run dev
 ```
+
+### Raspberry Pi w/ Sense Hat (Matrix display)
+
+1. Install packages using pip
+
+```
+pip install ...
+```
+
+2. Use private key from serviceAccountKey.json
