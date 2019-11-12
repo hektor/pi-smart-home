@@ -27,7 +27,7 @@ npm run dev
 1. Install packages using pip
 
 ```
-pip install ...
+pip3 install ...
 ```
 
 2. Use private key from serviceAccountKey.json
