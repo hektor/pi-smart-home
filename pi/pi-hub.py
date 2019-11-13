@@ -24,10 +24,6 @@ def get_document_by_name(name):
   doc = ref.document(name).get()
   return doc.to_dict()
 
-lightSettings = get_document_by_name('lights')
-plugSettings = get_document_by_name('plugs')
-doorSettings = get_document_by_name('doors')
-
 # sensehat constants
 
 ## colors
@@ -45,27 +41,6 @@ doors = [[(0,5),(0,6),(0,7)], [(7,5),(7,6),(7,7)]]
 lights = [(2,0),(5,0),(2,4),(5,4)]
 plugs = [(0,3), (7,3),(3,7),(4,7)]
 
-## update matrix with firestore settings
-
-for setting in lightSettings.keys():
-  if(lightSettings[setting] == True):
-    sense.set_pixel(lights[int(setting)][0],  lights[int(setting)][1], yellow)
-  else:
-    sense.set_pixel(lights[int(setting)][0],  lights[int(setting)][1], yellow_dark)
-
-for setting in plugSettings.keys():
-  if(plugSettings[setting] == True):
-    sense.set_pixel(plugs[int(setting)][0],  plugs[int(setting)][1], blue)
-  else:
-    sense.set_pixel(plugs[int(setting)][0],  plugs[int(setting)][1], blue_dark)
-
-for setting in doorSettings.keys():
-  if(doorSettings[setting] == True):
-    for pixel in doors[int(setting)]:
-      sense.set_pixel(pixel[0],  pixel[1], green)
-  else:
-    for pixel in doors[int(setting)]:
-      sense.set_pixel(pixel[0],  pixel[1], red)
 
 # add senshat sensor data to database
 
@@ -78,19 +53,52 @@ def set_sensor_settings():
 # matrix alarm 
 
 def raise_alarm():
-  playsound('/alarm.wav')
   for door in doors:
     for pixel in door:
       sense.set_pixel(pixel[0],  pixel[1], green)
-  while True:
     for light in lights:
       sense.set_pixel(light[0], light[1], yellow)
     time.sleep(1)
     for light in lights:
       sense.set_pixel(light[0], light[1], black)
     time.sleep(1)
+    check_alarm_sensor()
 
 def check_alarm_sensor():
   if get_document_by_name('sensors')['breach']: raise_alarm()
 
-check_alarm_sensor()
+while True:
+
+  check_alarm_sensor()
+  
+  ## get firestore settings
+
+  lightSettings = get_document_by_name('lights')
+  plugSettings = get_document_by_name('plugs')
+  doorSettings = get_document_by_name('doors')
+
+  print(lightSettings, plugSettings, doorSettings)
+
+  ## display settings on matrix
+
+  for setting in lightSettings.keys():
+    if(lightSettings[setting] == True):
+      sense.set_pixel(lights[int(setting)][0],  lights[int(setting)][1], yellow)
+    else:
+      sense.set_pixel(lights[int(setting)][0],  lights[int(setting)][1], yellow_dark)
+
+  for setting in plugSettings.keys():
+    if(plugSettings[setting] == True):
+      sense.set_pixel(plugs[int(setting)][0],  plugs[int(setting)][1], blue)
+    else:
+      sense.set_pixel(plugs[int(setting)][0],  plugs[int(setting)][1], blue_dark)
+
+  for setting in doorSettings.keys():
+    if(doorSettings[setting] == True):
+      for pixel in doors[int(setting)]:
+        sense.set_pixel(pixel[0],  pixel[1], green)
+    else:
+      for pixel in doors[int(setting)]:
+        sense.set_pixel(pixel[0],  pixel[1], red)
+
+  time.sleep(1)
