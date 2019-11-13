@@ -5,6 +5,7 @@
   import Lights from './views/Lights.svelte'
   import Plugs from './views/Plugs.svelte'
   import Doors from './views/Doors.svelte'
+  import Monitor from './views/Monitor.svelte'
   import Security from './views/Security.svelte'
   import About from './views/About.svelte'
 
@@ -27,6 +28,7 @@
   let lightSettings = []
   let plugSettings = []
   let doorSettings = []
+  let sensorData = []
   const unsubscribe = authState(auth).subscribe(u => (user = u))
   const title = 'Pi Hub'
 
@@ -41,6 +43,10 @@
 
     getAllFromDocument('devices', 'doors').then(data => {
       doorSettings = data
+    })
+
+    getAllFromDocument('devices', 'sensors').then(data => {
+      sensorData = data
     })
   })
 </script>
@@ -64,10 +70,11 @@
   <Router>
     <Route path="*" component={Signin} />
     <Route path="/about" component={About} />
-    <Route path="/lights" component={Lights} settings={lightSettings} />
-    <Route path="/plugs" component={Plugs} settings={plugSettings} />
-    <Route path="/doors" component={Doors} settings={doorSettings} />
+    <Route path="/lights" component={Lights} data={lightSettings} />
+    <Route path="/plugs" component={Plugs} data={plugSettings} />
+    <Route path="/doors" component={Doors} data={doorSettings} />
     <Route path="/security" component={Security} />
+    <Route path="/monitor" component={Monitor} data={sensorData} />
     <Tabbar />
   </Router>
 </div>
