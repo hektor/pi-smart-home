@@ -19,12 +19,26 @@
     return data;
    }
 
+   const getAlarmStatus = async () => {
+    let ref = await firestore.collection("devices").doc("sensors").get();
+    let data = await ref.data();
+    return data;
+   }
+
    /**
     * TODO: Update
     */
+
+    const toggleAlarm = async () => {
+        let alarmStatus = await getAlarmStatus()
+        alarmStatus = alarmStatus.breach
+        firestore.collection("devices").doc("sensors").update({
+          breach: !alarmStatus
+      });
+    }
 
     /**
      * TODO: Delete
      */
 
-export { getAllFromDocument }
+export { getAllFromDocument, toggleAlarm, getAlarmStatus }
