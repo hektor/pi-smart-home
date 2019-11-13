@@ -6,7 +6,6 @@ from sense_hat import SenseHat
 
 import time
 import requests
-from playsound import playsound
 
 # sensehat init
 
@@ -79,7 +78,7 @@ def set_sensor_settings():
 # matrix alarm 
 
 def raise_alarm():
-  playsound('/path/to/a/sound/file/you/want/to/play.mp3')
+  playsound('/alarm.wav')
   for door in doors:
     for pixel in door:
       sense.set_pixel(pixel[0],  pixel[1], green)
