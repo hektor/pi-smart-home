@@ -6,6 +6,10 @@
     * TODO: Create
     */
 
+    const saveMatrix = async (name, matrix) => {
+      firestore.collection('matrices').add({name: name, matrix: matrix})
+    }
+
       /**
    * TODO: Get all from document
    */
@@ -41,4 +45,4 @@
      * TODO: Delete
      */
 
-export { getAllFromDocument, toggleAlarm, getAlarmStatus }
+export { getAllFromDocument, toggleAlarm, getAlarmStatus, saveMatrix }
