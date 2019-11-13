@@ -2,6 +2,8 @@
 
 New Media Development - Web of Things
 
+Live Demo https://client-six-omega.now.sh/
+
 ## Technologies
 
 - Svelte
