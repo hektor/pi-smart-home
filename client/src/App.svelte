@@ -7,7 +7,6 @@
   import Doors from './views/Doors.svelte'
   import Monitor from './views/Monitor.svelte'
   import Security from './views/Security.svelte'
-  import About from './views/About.svelte'
   import CharacterGenerator from './views/CharacterGenerator.svelte'
 
   // Svelte
@@ -17,6 +16,7 @@
   import Header from './components/Header.svelte'
   import Tabbar from './components/Tabbar.svelte'
   import Togglable from './components/Togglable.svelte'
+  import MainLayout from './layouts/MainLayout.svelte'
 
   // Helpers
   import { getAllFromDocument } from './helpers/firestore'
@@ -62,10 +62,9 @@
 </style>
 
 <Header {title} />
-<div class="ml-32">
+<MainLayout>
   <Router>
     <Route path="*" component={Signin} />
-    <Route path="/about" component={About} />
     <Route path="/lights" component={Lights} data={lightSettings} />
     <Route path="/plugs" component={Plugs} data={plugSettings} />
     <Route path="/doors" component={Doors} data={doorSettings} />
@@ -74,4 +73,4 @@
     <Route path="/character-generator" component={CharacterGenerator} />
     <Tabbar />
   </Router>
-</div>
+</MainLayout>

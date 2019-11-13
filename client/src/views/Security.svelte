@@ -25,7 +25,7 @@
   }
 </style>
 
-<h1>Security</h1>
+<h1 class="text-gray-400 text-3xl mb-16">Security</h1>
 <button class={status ? 'active' : ''} on:click={handleAlert}>
   {status ? 'Alarming!' : 'Press for alarm'}
 </button>
