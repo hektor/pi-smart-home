@@ -1,6 +1,12 @@
 <script>
   import { toggleAlarm, getAlarmStatus } from '../helpers/firestore'
-  let status = getAlarmStatus()
+  import { onMount } from 'svelte'
+  let status = false
+  onMount(() => {
+    getAlarmStatus().then(currentStatus => {
+      status = currentStatus
+    })
+  })
   const handleAlert = () => {
     toggleAlarm()
     status = !status
@@ -21,5 +27,5 @@
 
 <h1>Security</h1>
 <button class={status ? 'active' : ''} on:click={handleAlert}>
-  {status ? 'Alarming!' : 'Alert'}
+  {status ? 'Alarming!' : 'Press for alarm'}
 </button>
