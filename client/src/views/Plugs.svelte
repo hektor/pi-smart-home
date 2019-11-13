@@ -1,9 +1,9 @@
 <script>
-  export let settings = []
+  export let data = []
   import Togglable from '../components/Togglable.svelte'
 </script>
 
 <h1>Plugs</h1>
-{#each Object.values(settings) as setting, i}
+{#each Object.values(data) as setting, i}
   <Togglable status={setting} type="plug" id={i} />
 {/each}
