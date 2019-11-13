@@ -13,6 +13,7 @@
     ShieldIcon,
     KeyIcon,
     ActivityIcon,
+    MehIcon,
   } from 'svelte-feather-icons'
 </script>
 
@@ -24,4 +25,5 @@
   <Tab href="/doors" icon={KeyIcon} />
   <Tab href="/security" icon={ShieldIcon} />
   <Tab href="/monitor" icon={ActivityIcon} />
+  <Tab href="/character-generator" icon={MehIcon} />
 </div>
