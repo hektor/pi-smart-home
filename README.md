@@ -2,7 +2,7 @@
 
 New Media Development - Web of Things
 
-Live Demo https://client-six-omega.now.sh/
+Live Demo https://client-n1zuwi5vl.now.sh/
 
 ## Technologies
 
